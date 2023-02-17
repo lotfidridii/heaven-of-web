@@ -1,0 +1,40 @@
+.footer .copyright {
+    position: relative;
+    text-align: center;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.footer .copyright::before {
+    position: absolute;
+    content: "";
+    width: 50%;
+    height: 1px;
+    top: 0;
+    left: 25%;
+    background: rgba(256, 256, 256, 0.2);
+}
+
+.footer .copyright p {
+    margin: 0;
+}
+
+.footer .copyright .col-md-6:last-child p {
+    text-align: right;
+}
+
+.footer .copyright p a {
+    color: var(--first-color);
+    transition: .4s;
+}
+
+.footer .copyright p a:hover {
+    color: var(--second-color);
+    letter-spacing: 1px;
+}
+
+@media (max-width: 767.98px) {
+    .footer {
+        margin-bottom: 3rem;
+    }
+}

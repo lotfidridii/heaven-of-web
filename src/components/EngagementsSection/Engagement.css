@@ -1,0 +1,75 @@
+.engagement-item {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    cursor: pointer;
+  }
+  .engagement-item:hover img{
+    transform: scale(1.1);
+  }
+  .engagement-item img {
+    width: 75px;
+    margin-top: auto;
+    margin-bottom: auto;
+    transition: .3s;
+  }
+  
+  .engagement-text {
+    position: relative;
+    margin-left: 20px;
+    padding-left: 20px;
+  }
+  
+  .engagement-text::before {
+    position: absolute;
+    content: "";
+    width: 1px;
+    height: calc(100% - 10px);
+    top: 5px;
+    left: 0;
+    background: rgba(242, 242, 242, 0.1);
+  }
+  
+  .engagement-text::after {
+    position: absolute;
+    content: "";
+    width: 3px;
+    height: 40px;
+    top: calc(50% - 20px);
+    left: -1px;
+    background: var(--second-color-alt);
+  }
+  
+  .engagement-text h3 {
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--second-color);
+    font-size: var(--h3-font-size);
+    font-weight: var(--font-semi-bold);
+  }
+  
+  .engagement-text p {
+    margin: 0;
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-medium);
+  }
+
+  .engagement-item:hover .engagement-text h3{
+    color: var(--second-color-alt);
+  }
+  
+  @media (max-width: 380.98px) {
+    .engagement-item img {
+      width: 60px;
+    }
+  
+  }
+  
+  @media (max-width: 280.98px) {
+    .engagement-item img {
+      display: none;
+    }
+  }

@@ -1,0 +1,102 @@
+.hero {
+  margin-bottom: 4rem;
+  padding: 145px 0;
+  overflow: hidden;
+  background: linear-gradient(var(--body-color), var(--first-color-alt)),
+    url(./hero-bg.webp);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero-content {
+  padding-top: 90px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  text-transform: uppercase;
+}
+
+.hero-text,
+.hero-btn,
+.hero-scroll {
+  padding: 1rem 0;
+}
+
+.hero-text h1 {
+  color: var(--first-color);
+  text-shadow: 0 1px 0 var(--second-color-alt),
+    0 2px 0 var(--second-color),
+    0 3px 0 var(--second-color),
+    0 4px 0 var(--second-color),
+    0 5px 0 var(--second-color),
+    0 6px 1px var(--body-color),
+    0 0 5px rgba(0, 0, 0, .1),
+    0 1px 3px rgba(0, 0, 0, .3),
+    0 3px 5px rgba(0, 0, 0, .2),
+    0 5px 10px rgba(0, 0, 0, .25),
+    0 10px 10px rgba(0, 0, 0, .2),
+    0 20px 20px rgba(0, 0, 0, .15);
+  letter-spacing: 0.25rem;
+  margin-bottom: 15px;
+  font-size: var(--h1-font-size);
+  font-weight: var(--font-bold);
+
+}
+
+.hero-text h2 {
+  color: var(--body-color);
+  font-size: var(--h3-font-size);
+  font-weight: var(--font-bold);
+  text-shadow: 0 1px 0 var(--first-color-alt);
+}
+
+.hero-btn .btn {
+  color: var(--second-color);
+  background: var(--body-color);
+  box-shadow: inset 0 0 0 50px var(--body-color);
+}
+
+.hero .hero-btn .btn:hover {
+  color: var(--body-color);
+  background: transparent;
+  box-shadow: inset 0 0 0 0 var(--body-color);
+  border-color: var(--body-color);
+}
+
+.hero-scroll {
+  transition: .4s;
+}
+
+.hero-scroll:hover {
+  transform: translateY(10px);
+}
+
+@media (max-width: 991.98px) {
+  .hero {
+    padding-top: 80px 0;
+  }
+
+  .hero-content {
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .hero {
+    padding-top: 40px 0;
+    text-align: center;
+  }
+
+  .hero-content {
+    align-items: center;
+  }
+
+  .hero-text,
+  .hero-btn,
+  .hero-scroll {
+    padding: .75rem 0;
+  }
+}

@@ -1,0 +1,48 @@
+.section-header {
+    text-transform: uppercase;
+    margin-bottom: 45px;
+  }
+  
+  .section-header h4 {
+    display: inline-block;
+    margin: 0 30px;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    position: relative;
+    letter-spacing: 1px;
+    background: var(--body-color);
+    color: var(--first-color-alt);
+    font-size: var(--h4-font-size);
+    font-weight: var(--font-semi-bold);
+  }
+  
+  .section-header h4::before {
+    position: absolute;
+    content: "";
+    height: 3px;
+    top: 11px;
+    right: 0;
+    left: -30px;
+    background: var(--second-color);
+    z-index: -1;
+  }
+  
+  .section-header h4::after {
+    position: absolute;
+    content: "";
+    width: 3px;
+    height: 3px;
+    top: 11px;
+    left: 3px;
+    background: var(--second-color);
+    z-index: 1;
+  }
+  
+  .section-header h2 {
+    margin: 0;
+    position: relative;
+    color: var(--first-color);
+    font-size: var(--h2-font-size);
+    font-weight: var(--font-bold);
+    text-shadow: 0 1px 0 var(--first-color-alt);
+  }

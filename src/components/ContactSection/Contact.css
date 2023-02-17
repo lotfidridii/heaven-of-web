@@ -1,0 +1,97 @@
+.contact-form {
+    position: relative;
+    padding: 0 0 45px 45px;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    box-shadow: none !important;
+    background-color: var(--body-color);
+    color: var(--first-color);
+  }
+  .contact-form input,
+  .contact-form textarea{
+    color: var(--first-color);
+    padding: 15px 0;
+    background: none;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid rgba(256, 256, 256, 0.5) !important;
+  }
+  
+  .contact-form textarea {
+    height: 90px;
+    overflow: hidden;
+  }
+  
+  .contact-form .form-control::placeholder {
+    color: var(--first-color);
+    opacity: .8;
+  }
+  
+  .contact-form .btn {
+    margin-top: 35px;
+    color: var(--body-color);
+    background: var(--body-color);
+    box-shadow: inset 0 0 0 50px var(--first-color);
+    border-color: var(--first-color);
+  }
+  
+  .contact-form .btn:hover {
+    color: var(--first-color);
+    background: transparent;
+    box-shadow: inset 0 0 0 0 var(--first-color);
+    border-color: var(--first-color);
+  }
+  
+  .contact-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact-menu a {
+    transition: .5s;
+  }
+  .contact-menu a:hover {
+    color: var(--second-color);
+    letter-spacing: .5px;
+  }
+  .contact-menu a {
+    color: var(--first-color);
+    line-height: 20px;
+    margin: 5px 0;
+  }
+  
+  .contact-social {
+    position: relative;
+    margin-top: 15px;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .contact-social a  {
+    margin-right: 15px;
+    font-size: 20px;
+    color: var(--first-color);
+    transition: 0.3s;
+  }
+  
+  .contact-social a:hover {
+    color: var(--second-color);
+    transform: scale(1.1);
+  }
+  
+  @media (max-width: 767.98px) {
+    .container-fluid {
+      background: none;
+    }
+  
+    .contact-form {
+      padding: 90px 0;
+    }
+  
+    .contact-menu a {
+      font-size: .875rem;
+    }
+  }
