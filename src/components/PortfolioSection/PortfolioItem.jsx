@@ -49,28 +49,24 @@ const images = [
     alt: "IZI Elec",
     title: "Conception d'un logo",
     link: Portfolioimg5,
-    linkText: "voir le logo",
   },
   {
     src: Portfolioimg6,
     alt: "Borne Home",
     title: "Conception d'un logo",
     link: Portfolioimg6,
-    linkText: "voir le logo",
   },
   {
     src: Portfolioimg7,
     alt: "Borne Home",
     title: "Stratégie de contenu",
     link: "https://www.instagram.com/france_energie_solution/",
-    linkText: "",
   },
   {
     src: Portfolioimg8,
     alt: "Borne Home",
     title: "Stratégie de contenu",
     link: "https://www.instagram.com/fenetreetconfort/",
-    linkText: "",
   },
 ];
 const PortfolioItem = () => {
@@ -115,7 +111,7 @@ const PortfolioItem = () => {
                   <br />
                   <a href={image.link} target="_blank" rel="noreferrer">
                     {image.linkText}
-                    <UilArrowRight />
+                    {image.linkText ? <UilArrowRight /> : null}
                   </a>
                 </p>
               </div>

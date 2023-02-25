@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const ContactForm = () => {
@@ -10,7 +10,6 @@ const ContactForm = () => {
     subject: "",
     message: "",
   });
-  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -28,10 +27,6 @@ const ContactForm = () => {
       })
         .then(() => {
           navigate("/Soumissiondeformulaire");
-          setShowSuccess(true);
-          setTimeout(() => {
-            setShowSuccess(false);
-          }, 3000);
         })
         .catch((error) => alert(error));
     }
@@ -117,11 +112,6 @@ const ContactForm = () => {
         </Form.Control.Feedback>
       </Form.Group>
       <Button type="submit">Envoyer</Button>
-      {showSuccess && (
-        <Alert variant="success" className="mt-3">
-          votre message a été envoyer avec succès.
-        </Alert>
-      )}
     </Form>
   );
 };

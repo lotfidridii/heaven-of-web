@@ -34,11 +34,10 @@
     display: flex;
     align-items: center;
     background: var(--body-color);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .portfolio .portfolio-text p {
-    width: calc(100% - 70px);
     margin: 0 0 0 15px;
     white-space: nowrap;
     overflow: hidden;

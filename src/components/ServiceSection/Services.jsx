@@ -37,12 +37,12 @@ function Services() {
           <ServiceItem
             ServiceIcon={<UilPen />}
             ServiceTitle="Conception graphique"
-            ServiceDescription="Nous aidons les entreprises à améliorer leur visibilité en ligne grâce à nos stratégies d'optimisation SEO efficaces. Nous croyons que le référencement naturel est la clé d'un site Web réussi et nous sommes déterminés à vous aider à atteindre vos objectifs en ligne."
+            ServiceDescription="Nous créons des logos professionnels pour les entreprises, ainsi que des designs pour les réseaux sociaux et les campagnes publicitaires en ligne. Nous travaillons avec vous pour développer un look cohérent pour votre marque en ligne."
           />
           <ServiceItem
             ServiceIcon={<UilSearchAlt />}
             ServiceTitle="Référencement naturel"
-            ServiceDescription="Nous créons des logos professionnels pour les entreprises, ainsi que des designs pour les réseaux sociaux et les campagnes publicitaires en ligne. Nous travaillons avec vous pour développer un look cohérent pour votre marque en ligne."
+            ServiceDescription="Nous aidons les entreprises à améliorer leur visibilité en ligne grâce à nos stratégies d'optimisation SEO efficaces. Nous croyons que le référencement naturel est la clé d'un site Web réussi et nous sommes déterminés à vous aider à atteindre vos objectifs en ligne."
           />
           <ServiceItem
             ServiceIcon={<UilChartLine />}

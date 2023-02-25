@@ -6,7 +6,6 @@
     padding: 5px 0;
     text-align: center;
     line-height: 1;
-    font-size: 30px;
     right: 15px;
     bottom: -20%;
     z-index: 9;
@@ -37,4 +36,10 @@
 /* Show scroll */
 .show-scroll {
     bottom: 3rem;
+}
+
+@media (max-width: 767.98px) {
+    .scrollup {
+        display: none;
+    }
 }
