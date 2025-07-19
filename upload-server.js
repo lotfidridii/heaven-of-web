@@ -1,15 +1,14 @@
-const express = require('express');
+const isProduction = process.env.NODE_ENV === 'production';
+const PORT = process.env.PORT || 3001;const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3001;
-
 // Enable CORS for React app
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'],
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://heavenofweb.fr', 'https://www.heavenofweb.fr'],
   credentials: true
 }));
 

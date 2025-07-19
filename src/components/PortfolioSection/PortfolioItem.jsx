@@ -68,6 +68,10 @@ function PortfolioItem() {
   }
 
   // Process images to handle both static and uploaded images
+  const isProduction = process.env.NODE_ENV === 'production';
+const uploadServerUrl = isProduction 
+  ? 'https://heavenofweb.fr:3001' 
+  : 'http://localhost:3001';
   const images = siteData.portfolio.map((item, index) => {
     let imageSrc = '';
     
@@ -81,7 +85,7 @@ function PortfolioItem() {
         // Extract filename and serve from upload server
         const filename = item.src.replace('./img/', '').replace('/img/', '');
         // Serve uploaded images from the upload server on port 3001
-        imageSrc = `http://localhost:3001/uploads/${filename}`;
+        imageSrc = `${uploadServerUrl}/uploads/${filename}`;
       }
       // Fallback to original path
       else {
