@@ -9,52 +9,52 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
-        
+
     - name: Install dependencies
       run: npm ci
-      
+
     - name: Build React app
       run: npm run build
       env:
         REACT_APP_ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         CI: false
-        
+
     - name: Setup SSH
       uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        
+
     - name: Add Hostinger to known hosts
       run: |
-        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-        
+        ssh-keyscan -p 65002 -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
     - name: Deploy to Hostinger
       run: |
         # Create backup of current site
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd public_html && tar -czf backup-$(date +%Y%m%d-%H%M%S).tar.gz * || true"
-        
+        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd public_html && tar -czf backup-$(date +%Y%m%d-%H%M%S).tar.gz * || true"
+
         # Upload build files
-        rsync -avz --delete build/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:public_html/
-        
+        rsync -avz -e "ssh -p 65002" --delete build/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:public_html/
+
         # Upload upload-server.js and package.json for backend
-        scp upload-server.js package.json ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-        
+        scp -P 65002 upload-server.js package.json ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
+
         # Install/update Node.js dependencies on server
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd ~/ && npm install --production"
-        
+        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd ~/ && npm install --production"
+
         # Restart upload server (if using PM2 or similar)
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "pkill -f upload-server || true && nohup node upload-server.js > upload-server.log 2>&1 &"
-        
+        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "pkill -f upload-server || true && nohup node upload-server.js > upload-server.log 2>&1 &"
+
     - name: Verify deployment
       run: |
         echo "Deployment completed successfully!"
