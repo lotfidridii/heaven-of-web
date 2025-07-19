@@ -41,10 +41,10 @@ jobs:
     - name: Deploy to Hostinger
       run: |
         # Create backup of current site
-        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd public_html && tar -czf backup-$(date +%Y%m%d-%H%M%S).tar.gz * || true"
+        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd domains/heavenofweb.fr/public_html && tar -czf backup-$(date +%Y%m%d-%H%M%S).tar.gz * || true"
 
-        # Upload build files
-        rsync -avz -e "ssh -p 65002" --delete build/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:public_html/
+        # Upload build files to correct domain path
+        rsync -avz -e "ssh -p 65002" --delete build/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/heavenofweb.fr/public_html/
 
         # Upload upload-server.js and package.json for backend
         scp -P 65002 upload-server.js package.json ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/

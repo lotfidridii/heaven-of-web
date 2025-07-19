@@ -17,9 +17,9 @@ fi
 echo "✅ Build completed successfully!"
 
 # Variables (update these with your Hostinger details)
-HOST="your-hostinger-host.com"
-USERNAME="your-username"
-REMOTE_PATH="public_html"
+HOST="89.116.53.67"
+USERNAME="u202791259"
+REMOTE_PATH="domains/heavenofweb.fr/public_html"
 
 echo "📤 Uploading files to Hostinger..."
 
