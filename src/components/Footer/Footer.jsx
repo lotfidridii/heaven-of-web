@@ -1,5 +1,4 @@
 import { Container } from "react-bootstrap";
-import TunisiaFlag from "./tunisia.webp";
 import "./Footer.css"
 const currentYear = new Date().getFullYear();
 function Footer() {
@@ -8,7 +7,7 @@ function Footer() {
       <Container fluid>
         <Container className="copyright">
           <p>
-            &copy; {currentYear} <a href="#accueil">Heaven of web</a>, Tous droits réservés | Made in Tunisia <img src={TunisiaFlag} alt="" />
+            &copy; {currentYear} <a href="#accueil">Heaven of web</a>, Tous droits réservés
           </p>
         </Container>
       </Container>

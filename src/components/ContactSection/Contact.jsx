@@ -1,16 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
-import Lottie from "react-lottie";
-import {
-  phoneNumber,
-  phoneNumberLink,
-  email,
-  emailLink,
-  facebookLink,
-  twitterLink,
-  instagramLink,
-  linkedinLink,
-  githubLink,
-} from "./ContactInfo";
+import { Player } from "@lottiefiles/react-lottie-player";
 import {
   UilTwitterAlt,
   UilFacebookF,
@@ -23,17 +12,13 @@ import {
 import ContactForm from "./ContactForm";
 import SectionHeader from "../SectionHeader/SectionHeader";
 import ContactAnimation from "./lottie/contact-animation.json";
+import { useSiteData } from "../../contexts/SiteDataContext";
 import "./Contact.css";
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: ContactAnimation,
-  rendererSettings: {
-    preserveAspectRatio: "xMidYMid meet",
-  },
-};
 
 function Contact() {
+  const { data } = useSiteData();
+  const contactData = data.contact;
+
   return (
     <section className="contact" id="contact">
       <Container>
@@ -44,31 +29,46 @@ function Contact() {
         />
         <Row>
           <Col md="6" className="contact-info">
-            <Lottie options={defaultOptions} height={160} />
+            <Player
+              autoplay
+              loop
+              src={ContactAnimation}
+              style={{ height: '160px', width: '160px' }}
+            />
             <div className="contact-menu">
-              <a href={emailLink}>
-                <UilEnvelopes /> {email}
+              <a href={contactData.emailLink}>
+                <UilEnvelopes /> {contactData.email}
               </a>
-              <a href={phoneNumberLink}>
-                <UilPhone /> {phoneNumber}
+              <a href={contactData.phoneLink}>
+                <UilPhone /> {contactData.phone}
               </a>
             </div>
             <div className="contact-social">
-              <a href={twitterLink}>
-                <UilTwitterAlt />
-              </a>
-              <a href={facebookLink}>
-                <UilFacebookF />
-              </a>
-              <a href={instagramLink}>
-                <UilInstagram />
-              </a>
-              <a href={linkedinLink}>
-                <UilLinkedinAlt />
-              </a>
-              <a href={githubLink}>
-                <UilGithub />
-              </a>
+              {contactData.socialMedia.twitter && (
+                <a href={contactData.socialMedia.twitter} target="_blank" rel="noreferrer">
+                  <UilTwitterAlt />
+                </a>
+              )}
+              {contactData.socialMedia.facebook && (
+                <a href={contactData.socialMedia.facebook} target="_blank" rel="noreferrer">
+                  <UilFacebookF />
+                </a>
+              )}
+              {contactData.socialMedia.instagram && (
+                <a href={contactData.socialMedia.instagram} target="_blank" rel="noreferrer">
+                  <UilInstagram />
+                </a>
+              )}
+              {contactData.socialMedia.linkedin && (
+                <a href={contactData.socialMedia.linkedin} target="_blank" rel="noreferrer">
+                  <UilLinkedinAlt />
+                </a>
+              )}
+              {contactData.socialMedia.github && (
+                <a href={contactData.socialMedia.github} target="_blank" rel="noreferrer">
+                  <UilGithub />
+                </a>
+              )}
             </div>
           </Col>
           <Col md="6">

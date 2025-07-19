@@ -1,0 +1,81 @@
+{
+  "contact": {
+    "email": "contact@heavenofweb.com",
+    "emailLink": "mailto:contact@heavenofweb.com",
+    "phone": "+33 1 23 45 67 89",
+    "phoneLink": "tel:+33123456789",
+    "socialMedia": {
+      "twitter": "https://twitter.com/heavenofweb",
+      "facebook": "https://facebook.com/heavenofweb",
+      "instagram": "https://instagram.com/heavenofweb",
+      "linkedin": "https://linkedin.com/company/heavenofweb",
+      "github": "https://github.com/heavenofweb"
+    }
+  },
+  "portfolio": [
+    {
+      "id": 1,
+      "title": "Conception de site web",
+      "alt": "France Énergie Solution",
+      "src": "./img/Portfolio-1.webp",
+      "link": "https://www.france-es.fr",
+      "linkText": "voir le site web"
+    },
+    {
+      "id": 2,
+      "title": "Conception de site web",
+      "alt": "Borne Home",
+      "src": "./img/Portfolio-2.webp",
+      "link": "https://www.bornehome.fr",
+      "linkText": "voir le site web"
+    },
+    {
+      "id": 3,
+      "title": "Conception de site web",
+      "alt": "Fenêtre & confort",
+      "src": "./img/Portfolio-3.webp",
+      "link": "https://www.fenetreetconfort.fr",
+      "linkText": "voir le site web"
+    },
+    {
+      "id": 4,
+      "title": "Conception de site web",
+      "alt": "Menuiserie Dridi",
+      "src": "./img/Portfolio-4.webp",
+      "link": "https://www.menuiserie-dridi.fr",
+      "linkText": "voir le site web"
+    },
+    {
+      "id": 5,
+      "title": "Conception de site web",
+      "alt": "Plomberie Sanitaire",
+      "src": "./img/Portfolio-5.webp",
+      "link": "https://www.plomberie-sanitaire.fr",
+      "linkText": "voir le site web"
+    },
+    {
+      "id": 6,
+      "title": "Conception de site web",
+      "alt": "Électricité Générale",
+      "src": "./img/Portfolio-6.webp",
+      "link": "https://www.electricite-generale.fr",
+      "linkText": "voir le site web"
+    },
+    {
+      "id": 7,
+      "title": "Conception de site web",
+      "alt": "Maçonnerie Moderne",
+      "src": "./img/Portfolio-7.webp",
+      "link": "https://www.maconnerie-moderne.fr",
+      "linkText": "voir le site web"
+    },
+    {
+      "id": 8,
+      "title": "Conception de site web",
+      "alt": "Peinture Décoration",
+      "src": "./img/Portfolio-8.webp",
+      "link": "https://www.peinture-decoration.fr",
+      "linkText": "voir le site web"
+    }
+  ]
+}

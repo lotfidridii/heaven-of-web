@@ -7,17 +7,9 @@ import {
   UilSearchAlt,
   UilChartLine,
 } from "@iconscout/react-unicons";
-import Lottie from "react-lottie";
+import { Player } from "@lottiefiles/react-lottie-player";
 import ServiceAnimation from "./lottie/services.json";
 import "./Services.css";
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: ServiceAnimation,
-  rendererSettings: {
-    preserveAspectRatio: "xMidYMid meet",
-  },
-};
 
 function Services() {
   return (
@@ -50,10 +42,11 @@ function Services() {
             ServiceDescription="Nous aidons les entreprises à développer une stratégie de contenu efficace pour améliorer leur présence en ligne. Nous travaillons avec vous pour comprendre vos objectifs et créer du contenu qui les soutient, y compris des articles de blog et des publications sur les réseaux sociaux."
           />
         </Row>
-        <Lottie
-          options={defaultOptions}
-          height={350}
-          style={{ margin: " -7% 0" }}
+        <Player
+          autoplay
+          loop
+          src={ServiceAnimation}
+          style={{ height: '350px', margin: '-7% 0' }}
         />
       </Container>
     </section>

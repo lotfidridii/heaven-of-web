@@ -1,20 +1,27 @@
-import React from 'react'
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { SiteDataProvider } from './contexts/SiteDataContext';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Accueil from './accueil';
 import Success from './success';
-import { BrowserRouter as Router, Routes, Route }
-    from 'react-router-dom';
+import SimpleAdmin from './components/SimpleAdmin/SimpleAdmin';
 
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path='/' exact element={<Accueil />} />
-                <Route path='/Soumissiondeformulaire' exact element={<Success />} />
-            </Routes>
-        </Router>
-    )
+        <ErrorBoundary>
+            <SiteDataProvider>
+                <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                    <Routes>
+                        <Route path='/' element={<Accueil />} />
+                        <Route path='/Soumissiondeformulaire' element={<Success />} />
+                        <Route path='/admin' element={<SimpleAdmin />} />
+                    </Routes>
+                </Router>
+            </SiteDataProvider>
+        </ErrorBoundary>
+    );
 }
 
-export default App
+export default App;

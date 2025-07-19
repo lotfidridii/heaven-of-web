@@ -1,0 +1,429 @@
+.simple-admin {
+  min-height: 100vh;
+  background: #041c32;
+  padding: 2rem 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.admin-header-card {
+  background: rgba(219, 219, 219, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(219, 219, 219, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+}
+
+.admin-header-card h1 {
+  color: #dbdbdb;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.admin-header-card p {
+  color: #d8dadbc2;
+  margin-bottom: 0;
+}
+
+.simple-admin .card {
+  background: #041c32;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(219, 219, 219, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  color: #fefefe;
+}
+
+.simple-admin .nav-tabs {
+  border-bottom: 2px solid rgba(219, 219, 219, 0.2);
+}
+
+.simple-admin .nav-tabs .nav-link {
+  border: none;
+  color: #d8dadbc2;
+  font-weight: 500;
+  padding: 1rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.simple-admin .nav-tabs .nav-link:hover {
+  border-color: transparent;
+  color: #ff4848;
+}
+
+.simple-admin .nav-tabs .nav-link.active {
+  background: #ff4848;
+  color: white;
+  border-radius: 10px 10px 0 0;
+  border-color: transparent;
+}
+
+.simple-admin .form-control {
+  background: rgba(219, 219, 219, 0.1);
+  border: 2px solid rgba(219, 219, 219, 0.2);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  color: #dbdbdb;
+}
+
+.simple-admin .form-control::placeholder {
+  color: #d8dadbc2;
+}
+
+.simple-admin .form-control:focus {
+  background: rgba(219, 219, 219, 0.15);
+  border-color: #ff4848;
+  box-shadow: 0 0 0 0.2rem rgba(255, 72, 72, 0.25);
+  color: #dbdbdb;
+}
+
+.simple-admin .form-label {
+  color: #dbdbdb;
+  font-weight: 500;
+}
+
+.simple-admin .btn {
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.simple-admin .btn-primary {
+  background: #ff4848;
+  border: none;
+  color: white;
+}
+
+.simple-admin .btn-primary:hover {
+  background: #df7070;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 72, 72, 0.4);
+}
+
+.simple-admin .btn-secondary {
+  background: rgba(219, 219, 219, 0.2);
+  border: 1px solid rgba(219, 219, 219, 0.3);
+  color: #dbdbdb;
+}
+
+.simple-admin .btn-secondary:hover {
+  background: rgba(219, 219, 219, 0.3);
+  border-color: rgba(219, 219, 219, 0.4);
+  color: #dbdbdb;
+}
+
+.simple-admin .btn-outline-primary {
+  border-color: #ff4848;
+  color: #ff4848;
+}
+
+.simple-admin .btn-outline-primary:hover {
+  background: #ff4848;
+  border-color: #ff4848;
+  color: white;
+}
+
+.simple-admin .btn-outline-danger {
+  border-color: #df7070;
+  color: #df7070;
+}
+
+.simple-admin .btn-outline-danger:hover {
+  background: #df7070;
+  border-color: #df7070;
+  color: white;
+}
+
+.simple-admin .table {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  color: #dbdbdb;
+  border: 1px solid rgba(219, 219, 219, 0.2);
+}
+
+.simple-admin .table thead th {
+  background: #ff4848;
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.simple-admin .table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-color: rgba(219, 219, 219, 0.2);
+  background: rgba(219, 219, 219, 0.05);
+  color: #dbdbdb;
+  border-bottom: 1px solid rgba(219, 219, 219, 0.1);
+}
+
+.simple-admin .table tbody tr:hover {
+  background-color: rgba(219, 219, 219, 0.15);
+}
+
+.simple-admin .table tbody tr:hover td {
+  background-color: rgba(219, 219, 219, 0.15);
+}
+
+.simple-admin .table a {
+  color: #ff4848;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.simple-admin .table a:hover {
+  color: #df7070;
+  text-decoration: underline;
+}
+
+.simple-admin .table .text-muted {
+  color: #d8dadbc2 !important;
+  font-size: 0.85rem;
+}
+
+.contact-preview {
+  background: rgba(219, 219, 219, 0.1);
+  padding: 1rem;
+  border-radius: 10px;
+  border-left: 4px solid #ff4848;
+  color: #dbdbdb;
+}
+
+.contact-preview p {
+  margin-bottom: 0.5rem;
+}
+
+.contact-preview .social-links div {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.contact-preview .social-links h6 {
+  color: #dbdbdb;
+}
+
+.contact-preview .text-muted {
+  color: #d8dadbc2 !important;
+}
+
+.simple-admin .modal-content {
+  background: #041c32;
+  border-radius: 15px;
+  border: 1px solid rgba(219, 219, 219, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.simple-admin .modal-header {
+  background: #ff4848;
+  color: white;
+  border-radius: 15px 15px 0 0;
+  border-bottom: none;
+}
+
+.simple-admin .modal-header .btn-close {
+  filter: invert(1);
+}
+
+.simple-admin .modal-body {
+  background: #041c32;
+  color: #dbdbdb;
+}
+
+.simple-admin .modal-footer {
+  background: #041c32;
+  border-top: 1px solid rgba(219, 219, 219, 0.1);
+}
+
+.simple-admin .alert {
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.simple-admin .alert-success {
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border-left: 4px solid #28a745;
+}
+
+.simple-admin .alert-danger {
+  background: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  border-left: 4px solid #dc3545;
+}
+
+.simple-admin .alert-info {
+  background: rgba(23, 162, 184, 0.2);
+  color: #17a2b8;
+  border-left: 4px solid #17a2b8;
+}
+
+.simple-admin .text-center {
+  text-align: center;
+}
+
+.simple-admin h5, .simple-admin h6 {
+  color: #dbdbdb;
+  font-weight: 500;
+}
+
+/* Admin Instructions */
+.admin-instructions {
+  background: rgba(255, 72, 72, 0.1);
+  border: 1px solid rgba(255, 72, 72, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  color: #d8dadbc2;
+}
+
+.admin-instructions strong {
+  color: #ff4848;
+}
+
+/* Enhanced Tab Styles */
+.simple-admin .nav-tabs .nav-link {
+  text-align: center;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.simple-admin .nav-tabs .nav-link small {
+  opacity: 0.8;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Form Section Headers */
+.form-section-header {
+  background: rgba(255, 72, 72, 0.1);
+  border-left: 4px solid #ff4848;
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0 1rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.form-section-header h6 {
+  margin: 0;
+  color: #ff4848;
+  font-weight: 600;
+}
+
+/* Success States */
+.form-success-indicator {
+  color: #28a745;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* Required Field Indicators */
+.simple-admin .form-label::after {
+  content: '';
+}
+
+.simple-admin .form-label.required::after {
+  content: ' *';
+  color: #ff4848;
+  font-weight: bold;
+}
+
+/* Upload Status */
+.upload-status {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.upload-status.success {
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.upload-status.error {
+  background: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.upload-status.uploading {
+  background: rgba(255, 72, 72, 0.2);
+  color: #ff4848;
+  border: 1px solid rgba(255, 72, 72, 0.3);
+}
+
+/* Image Upload Styles */
+.image-upload-area {
+  border: 2px dashed rgba(219, 219, 219, 0.3);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background: rgba(219, 219, 219, 0.05);
+}
+
+.image-upload-area:hover {
+  border-color: #ff4848;
+  background: rgba(255, 72, 72, 0.1);
+}
+
+.image-upload-area.dragover {
+  border-color: #ff4848;
+  background: rgba(255, 72, 72, 0.15);
+}
+
+.image-preview {
+  max-width: 200px;
+  max-height: 150px;
+  border-radius: 8px;
+  margin: 1rem auto;
+  display: block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.upload-text {
+  color: #d8dadbc2;
+  margin-top: 1rem;
+}
+
+.upload-text strong {
+  color: #ff4848;
+}
+
+@media (max-width: 768px) {
+  .simple-admin {
+    padding: 1rem 0;
+  }
+  
+  .simple-admin .nav-tabs .nav-link {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .simple-admin .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .simple-admin .table {
+    font-size: 0.9rem;
+  }
+  
+  .image-upload-area {
+    padding: 1.5rem;
+  }
+  
+  .image-preview {
+    max-width: 150px;
+    max-height: 100px;
+  }
+}

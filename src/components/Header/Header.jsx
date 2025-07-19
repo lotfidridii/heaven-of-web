@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
-import Bounce from "react-reveal/Bounce";
+import { motion } from "framer-motion";
 import {
   UilEstate,
   UilUser,
@@ -80,15 +80,16 @@ function Header() {
     <div className={`header ${headerClass}`} id="header">
       <Container>
         <nav className="nav">
-          <Bounce top delay={500}>
-            <a
-              href="#accueil"
-              className={`nav_logo ${logoClass}`}
-              id="nav-logo"
-            >
-              <img src={logo} alt="Logo" />
-            </a>
-          </Bounce>
+          <motion.a
+            href="#accueil"
+            className={`nav_logo ${logoClass}`}
+            id="nav-logo"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <img src={logo} alt="Logo" />
+          </motion.a>
 
           <div className={`nav_menu ${menuClass}`} id="nav-menu">
             <ul className="nav_list grid">

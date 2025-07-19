@@ -56,56 +56,169 @@
     margin-left: 5px;
 }
 
-.lightbox {
+/* Lightbox Overlay */
+.lightbox-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #041c32f3;
+    background-color: rgba(4, 28, 50, 0.95);
+    backdrop-filter: blur(5px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    cursor: pointer;
 }
 
+/* Lightbox Container */
+.lightbox {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    background: var(--body-color);
+    border-radius: 15px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Lightbox Image */
 .lightbox img {
+    width: 100%;
     max-width: 800px;
-    max-height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 15px 15px 0 0;
 }
 
+/* Lightbox Buttons */
 .lightbox svg {
-    width: 45px;
-    height: 45px;
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
 }
 
 .lightbox button {
     position: absolute;
-    top: 50%;
     color: var(--first-color);
-    background-color: transparent;
-    border: none;
-    outline: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: .3s;
+    transition: all 0.3s ease;
+    outline: none;
 }
 
 .lightbox button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--first-color);
     color: var(--second-color);
     transform: scale(1.1);
 }
 
+.lightbox button:active {
+    transform: scale(0.95);
+}
+
+/* Close Button */
 .lightbox .close {
-    right: 25px;
-    top: 15%;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
 }
 
-.lightbox .prev {
-    left: 25px;
+.lightbox .close:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-color: #ff4757;
+    color: #ff4757;
 }
 
-.lightbox .next {
-    right: 25px;
+/* External Navigation Buttons */
+.nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    z-index: 1002;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.nav-button svg {
+    width: 28px;
+    height: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: var(--first-color);
+    color: var(--first-color);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.nav-button:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.prev-button {
+    left: 20px;
+}
+
+.next-button {
+    right: 20px;
+}
+
+/* Lightbox Info Section */
+.lightbox-info {
+    padding: 20px;
+    background: var(--body-color);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.lightbox-info p {
+    margin: 0 0 10px 0;
+    font-size: var(--h3-font-size);
+    font-weight: 600;
+    color: var(--title-color);
+}
+
+.lightbox-info a {
+    color: var(--first-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.lightbox-info a:hover {
+    color: var(--second-color);
+    transform: translateY(-2px);
 }
 
 @media (max-width: 1024px) {
@@ -124,5 +237,45 @@
     .lightbox svg {
         width: 30px;
         height: 30px;
+    }
+
+    /* Mobile Navigation Buttons */
+    .nav-button {
+        width: 50px;
+        height: 50px;
+    }
+
+    .nav-button svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .prev-button {
+        left: 15px;
+    }
+
+    .next-button {
+        right: 15px;
+    }
+
+    /* For very small screens, move buttons closer */
+    @media (max-width: 480px) {
+        .prev-button {
+            left: 10px;
+        }
+
+        .next-button {
+            right: 10px;
+        }
+
+        .nav-button {
+            width: 45px;
+            height: 45px;
+        }
+
+        .nav-button svg {
+            width: 20px;
+            height: 20px;
+        }
     }
 }
