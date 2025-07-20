@@ -46,14 +46,11 @@ jobs:
         # Upload build files to correct domain path
         rsync -avz -e "ssh -p 65002" --delete build/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:domains/heavenofweb.fr/public_html/
 
-        # Upload upload-server.js and package.json for backend
-        scp -P 65002 upload-server.js package.json ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
+        # Create img directory for uploaded images
+        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "mkdir -p domains/heavenofweb.fr/public_html/img"
 
-        # Install/update Node.js dependencies on server
-        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd ~/ && npm install --production"
-
-        # Restart upload server (if using PM2 or similar)
-        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "pkill -f upload-server || true && nohup node upload-server.js > upload-server.log 2>&1 &"
+        # Set proper permissions for image uploads
+        ssh -p 65002 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "chmod 755 domains/heavenofweb.fr/public_html/img && chmod 755 domains/heavenofweb.fr/public_html/api"
 
     - name: Verify deployment
       run: |

@@ -68,10 +68,6 @@ function PortfolioItem() {
   }
 
   // Process images to handle both static and uploaded images
-  const isProduction = process.env.NODE_ENV === 'production';
-const uploadServerUrl = isProduction 
-  ? 'https://heavenofweb.fr:3001' 
-  : 'http://localhost:3001';
   const images = siteData.portfolio.map((item, index) => {
     let imageSrc = '';
     
@@ -80,12 +76,12 @@ const uploadServerUrl = isProduction
       if (staticImages[item.src]) {
         imageSrc = staticImages[item.src];
       }
-      // For uploaded images, serve them from the upload server
+      // For uploaded images, serve them directly from the img folder
       else if (item.src.includes('Portfolio-') && (item.src.startsWith('./img/') || item.src.startsWith('/img/'))) {
-        // Extract filename and serve from upload server
+        // Extract filename and serve from public img folder
         const filename = item.src.replace('./img/', '').replace('/img/', '');
-        // Serve uploaded images from the upload server on port 3001
-        imageSrc = `${uploadServerUrl}/uploads/${filename}`;
+        // Serve uploaded images directly from the img folder
+        imageSrc = `/img/${filename}`;
       }
       // Fallback to original path
       else {

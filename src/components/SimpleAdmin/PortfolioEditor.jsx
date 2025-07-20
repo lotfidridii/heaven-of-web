@@ -49,48 +49,46 @@ const PortfolioEditor = ({ onNotification }) => {
       return;
     }
 
-    // Show preview immediately
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setImagePreview(e.target.result);
-    };
-    reader.readAsDataURL(file);
+    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      onNotification('File size must be less than 10MB', 'danger');
+      return;
+    }
 
-    // Upload to server
     setUploadStatus('uploading');
-    setUploadMessage('Uploading image to server...');
+    setUploadMessage('Uploading image...');
 
     try {
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch('http://localhost:3001/api/upload', {
+      // Use PHP upload endpoint instead of Node.js
+      const uploadUrl = process.env.NODE_ENV === 'production' 
+        ? '/api/upload.php' 
+        : 'http://localhost:3000/api/upload.php';
+
+      const response = await fetch(uploadUrl, {
         method: 'POST',
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
-
       const result = await response.json();
 
       if (result.success) {
-        // Update form data with the server path
-        handleInputChange('src', result.path);
+        setFormData(prev => ({
+          ...prev,
+          src: result.path
+        }));
+        setImagePreview(URL.createObjectURL(file));
         setUploadStatus('success');
-        setUploadMessage(`Image saved to: ${result.path}`);
-        onNotification(`Image uploaded successfully! Saved as: ${result.filename}`, 'success');
+        setUploadMessage('Image uploaded successfully!');
+        onNotification('Image uploaded successfully!', 'success');
       } else {
         throw new Error(result.message || 'Upload failed');
       }
     } catch (error) {
-      // Error is already handled by setting uploadStatus to 'error'
       setUploadStatus('error');
-      setUploadMessage(`Upload failed: ${error.message}`);
-      onNotification(`Upload failed: ${error.message}`, 'danger');
-      // Reset preview on error
-      setImagePreview(null);
+      setUploadMessage('Upload failed. Please try again.');
+      onNotification('Upload failed: ' + error.message, 'danger');
     }
   };
 
