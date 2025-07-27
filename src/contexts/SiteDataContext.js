@@ -18,64 +18,114 @@ export const useSiteData = () => {
 
 export const SiteDataProvider = ({ children }) => {
   const [data, setData] = useState(initialData);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Load data from localStorage if available
+  // Load data from server on mount
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        
+    loadDataFromServer();
+  }, []);
+
+  const loadDataFromServer = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // In development, use localStorage since PHP server is not available
+      if (process.env.NODE_ENV !== 'production') {
         const savedData = localStorage.getItem('heavenofweb-site-data');
         if (savedData) {
           const parsedData = JSON.parse(savedData);
           setData(parsedData);
         }
-      } catch (err) {
-        setError(new Error('Failed to load site data'));
-        // Keep initial data as fallback
-        setData(initialData);
-      } finally {
-        setIsLoading(false);
+        return;
       }
-    };
 
-    loadData();
-  }, []);
+      // Production: use PHP API
+      const response = await fetch('/api/load-data.php');
+      const result = await response.json();
+      
+      if (result.success) {
+        setData(result.data);
+      } else {
+        throw new Error(result.message || 'Failed to load data');
+      }
+    } catch (error) {
+      console.error('Error loading data from server:', error);
+      setError('Failed to load data from server');
+      // Fallback to localStorage if server fails
+      try {
+        const savedData = localStorage.getItem('heavenofweb-site-data');
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          setData(parsedData);
+        }
+      } catch (localError) {
+        console.error('Error loading from localStorage:', localError);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // Save data to localStorage with better error handling
-  const saveData = useCallback((newData) => {
+  // Save data to server with better error handling
+  const saveDataToServer = useCallback(async (newData) => {
     try {
       setData(newData);
+      
+      // In development, only save to localStorage since PHP server is not available
+      if (process.env.NODE_ENV !== 'production') {
+        localStorage.setItem('heavenofweb-site-data', JSON.stringify(newData));
+        console.log('Development mode: Data saved to localStorage');
+        return;
+      }
+
+      // Production: save to server
+      const dataToSave = {
+        ...newData,
+        adminPassword: 'heaven2025' // Add admin password for server validation
+      };
+      
+      const response = await fetch('/api/save-data.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSave)
+      });
+      
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.message || 'Failed to save data to server');
+      }
+      
+      // Also save to localStorage as backup
       localStorage.setItem('heavenofweb-site-data', JSON.stringify(newData));
-      setError(null); // Clear any previous errors
-      return true;
+      
     } catch (err) {
-      const errorMessage = 'Failed to save data. Please try again.';
-      setError(new Error(errorMessage));
-      return false;
+      console.error('Error saving data:', err);
+      setError(new Error('Failed to save site data: ' + err.message));
+      throw err;
     }
   }, []);
 
   // Update contact information
-  const updateContact = useCallback((contactData) => {
+  const updateContact = useCallback(async (contactData) => {
     const updatedData = {
       ...data,
       contact: contactData
     };
-    return saveData(updatedData);
-  }, [data, saveData]);
+    return await saveDataToServer(updatedData);
+  }, [data, saveDataToServer]);
 
   // Update portfolio
-  const updatePortfolio = useCallback((portfolioData) => {
+  const updatePortfolio = useCallback(async (portfolioData) => {
     const updatedData = {
       ...data,
       portfolio: portfolioData
     };
-    return saveData(updatedData);
-  }, [data, saveData]);
+    return await saveDataToServer(updatedData);
+  }, [data, saveDataToServer]);
 
   // Add portfolio item with better ID generation
   const addPortfolioItem = useCallback((item) => {
@@ -95,14 +145,22 @@ export const SiteDataProvider = ({ children }) => {
   }, [data.portfolio, updatePortfolio]);
 
   // Reset to defaults
-  const resetData = useCallback(() => {
+  const resetData = useCallback(async () => {
     try {
+      // Reset server data
+      await saveDataToServer(initialData);
+      // Also clear localStorage
       localStorage.removeItem('heavenofweb-site-data');
       setData(initialData);
       setError(null);
     } catch (err) {
       setError(new Error('Failed to reset data'));
     }
+  }, [saveDataToServer]);
+
+  // Refresh data from server
+  const refreshData = useCallback(() => {
+    return loadDataFromServer();
   }, []);
 
   const value = {
@@ -114,6 +172,7 @@ export const SiteDataProvider = ({ children }) => {
     addPortfolioItem,
     removePortfolioItem,
     resetData,
+    refreshData,
     siteData: data // Alias for backward compatibility
   };
 

@@ -29,12 +29,13 @@ const ContactEditor = ({ onNotification }) => {
     }
   };
 
-  const handleSave = () => {
-    const success = updateContact(contactData);
-    if (success) {
+  const handleSave = async () => {
+    try {
+      await updateContact(contactData);
       onNotification('Contact information updated successfully!', 'success');
-    } else {
-      onNotification('Error updating contact information', 'danger');
+    } catch (error) {
+      console.error('Error updating contact information:', error);
+      onNotification('Error updating contact information: ' + error.message, 'danger');
     }
   };
 

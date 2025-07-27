@@ -58,15 +58,28 @@ const PortfolioEditor = ({ onNotification }) => {
     setUploadMessage('Uploading image...');
 
     try {
+      // In development, simulate upload without PHP server
+      if (process.env.NODE_ENV !== 'production') {
+        // Development mode: simulate upload and use blob URL
+        const fileName = `Portfolio-${Date.now()}.${file.name.split('.').pop()}`;
+        const simulatedPath = `./img/${fileName}`;
+        
+        setFormData(prev => ({
+          ...prev,
+          src: simulatedPath
+        }));
+        setImagePreview(URL.createObjectURL(file));
+        setUploadStatus('success');
+        setUploadMessage('Image uploaded successfully! (Development mode)');
+        onNotification('Image uploaded successfully! (Development mode)', 'success');
+        return;
+      }
+
+      // Production mode: use PHP upload
       const formData = new FormData();
       formData.append('image', file);
 
-      // Use PHP upload endpoint instead of Node.js
-      const uploadUrl = process.env.NODE_ENV === 'production' 
-        ? '/api/upload.php' 
-        : 'http://localhost:3000/api/upload.php';
-
-      const response = await fetch(uploadUrl, {
+      const response = await fetch('/api/upload.php', {
         method: 'POST',
         body: formData,
       });
@@ -138,45 +151,43 @@ const PortfolioEditor = ({ onNotification }) => {
     setShowModal(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!formData.title || !formData.alt || !formData.src) {
       onNotification('Please fill in all required fields', 'danger');
       return;
     }
 
-    if (editingItem) {
-      // Update existing item
-      const updatedPortfolio = data.portfolio.map(item => 
-        item.id === editingItem.id 
-          ? { ...item, ...formData }
-          : item
-      );
-      const success = updatePortfolio(updatedPortfolio);
-      if (success) {
+    try {
+      if (editingItem) {
+        // Update existing item
+        const updatedPortfolio = data.portfolio.map(item => 
+          item.id === editingItem.id 
+            ? { ...item, ...formData }
+            : item
+        );
+        await updatePortfolio(updatedPortfolio);
         onNotification('Portfolio item updated successfully!', 'success');
         setShowModal(false);
       } else {
-        onNotification('Error updating portfolio item', 'danger');
-      }
-    } else {
-      // Add new item
-      const success = addPortfolioItem(formData);
-      if (success) {
+        // Add new item
+        await addPortfolioItem(formData);
         onNotification('Portfolio item added successfully!', 'success');
         setShowModal(false);
-      } else {
-        onNotification('Error adding portfolio item', 'danger');
       }
+    } catch (error) {
+      console.error('Error saving portfolio item:', error);
+      onNotification('Error saving portfolio item: ' + error.message, 'danger');
     }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this portfolio item?')) {
-      const success = removePortfolioItem(id);
-      if (success) {
+      try {
+        await removePortfolioItem(id);
         onNotification('Portfolio item deleted successfully!', 'success');
-      } else {
-        onNotification('Error deleting portfolio item', 'danger');
+      } catch (error) {
+        console.error('Error deleting portfolio item:', error);
+        onNotification('Error deleting portfolio item: ' + error.message, 'danger');
       }
     }
   };
