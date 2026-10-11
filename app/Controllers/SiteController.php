@@ -271,10 +271,9 @@ final class SiteController
             redirect($back);
         }
 
-        // Honeypot: bots fill the hidden "website" field. Pretend success.
-        if (trim((string) ($_POST['website'] ?? '')) !== '') {
-            $json ? json_response(['ok' => true, 'message' => t('contact.success.text', ['name' => ''])]) : redirect($back);
-        }
+        // Anti-spam trap: bots fill the hidden field. The message is kept in the admin "Spam" folder
+        // (never silently lost, in case a browser filled it), but no notification or email is sent.
+        $trapped = trim((string) ($_POST['hp_trap'] ?? '')) !== '';
 
         $data = [
             'name' => mb_substr(trim((string) input('name', '')), 0, 120),
@@ -308,17 +307,19 @@ final class SiteController
 
         $id = DB::insert('messages', $data + [
             'lang' => $lang,
+            'status' => $trapped ? 'spam' : 'new',
             'ip_hash' => ip_hash(),
             'user_agent' => mb_substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255),
         ]);
-        Analytics::record(['type' => 'contact', 'path' => lurl(), 'lang' => $lang]);
+        if ($trapped) error_log("Contact form: message #{$id} filed as spam (anti-spam field filled).");
+        else Analytics::record(['type' => 'contact', 'path' => lurl(), 'lang' => $lang]);
 
         // Answer the visitor first, then do the slow work (push + emails).
         $successMsg = t('contact.success.text', ['name' => $data['name']]);
         if ($json) {
             self::respondAndContinue(['ok' => true, 'message' => $successMsg]);
         }
-        self::notify($id, $data, $lang);
+        if (!$trapped) self::notify($id, $data, $lang);
 
         if (!$json) {
             flash('contact_success', $successMsg);

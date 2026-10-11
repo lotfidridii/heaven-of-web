@@ -39,7 +39,8 @@ $bg = setting('img_hero');
           data-msg-required="<?= e(t('contact.error.required')) ?>" data-msg-email="<?= e(t('contact.error.email')) ?>"
           data-msg-message="<?= e(t('contact.error.message_short')) ?>" data-msg-consent="<?= e(t('contact.error.consent')) ?>">
       <?= csrf_field() ?>
-      <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <?php /* Anti-spam trap: invisible to people, filled by bots. Neutral name and label so browser autofill ignores it. */ ?>
+      <div class="hp" aria-hidden="true"><label for="hp-<?= e(substr(csrf_token(), 0, 6)) ?>">Ne pas remplir</label><input id="hp-<?= e(substr(csrf_token(), 0, 6)) ?>" type="text" name="hp_trap" value="" tabindex="-1" autocomplete="new-password" data-lpignore="true" data-1p-ignore data-bwignore></div>
       <p class="form-title"><?= e(t('contact.form_title')) ?></p>
 
       <?php if ($contactSuccess): ?><p class="form-alert is-success" role="status"><?= e($contactSuccess) ?></p><?php endif; ?>
