@@ -1,0 +1,23 @@
+{
+    "name": "heavenofweb/site",
+    "description": "Heaven of Web — agency website, admin panel and PWA",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.1",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "chillerlan/php-qrcode": "^5.0",
+        "minishlink/web-push": "^9.0",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "autoload": {
+        "psr-4": { "App\\": "app/" }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform-check": false
+    }
+}

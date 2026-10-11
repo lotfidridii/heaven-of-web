@@ -1,0 +1,16 @@
+{
+  "name": "heavenofweb",
+  "private": true,
+  "description": "Frontend vendor libraries for Heaven of Web (copied into public_html/assets/vendor by `npm run vendor`).",
+  "scripts": {
+    "vendor": "node tools/vendor.mjs"
+  },
+  "devDependencies": {
+    "@fontsource/cairo": "^5.1.0",
+    "@fontsource/poppins": "^5.1.0",
+    "chart.js": "^4.4.4",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.13",
+    "three": "^0.169.0"
+  }
+}

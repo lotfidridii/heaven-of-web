@@ -1,0 +1,35 @@
+# Dependencies (installed with `composer install` / `npm install`)
+/vendor/
+/node_modules/
+
+# Secrets and local configuration
+/app/config.php
+.env
+.env.*
+
+# Local development & test environment (Docker, local database, test data)
+/docker/
+/docker-compose.yml
+/docker-compose.*.yml
+compose.yml
+compose.*.yml
+/.claude/
+
+# Runtime files
+/storage/*
+!/storage/.gitkeep
+!/storage/.htaccess
+*.log
+
+# Uploaded content (kept on the server, not in git) — seed images are versioned
+/public_html/uploads/*
+!/public_html/uploads/.htaccess
+!/public_html/uploads/seed/
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
