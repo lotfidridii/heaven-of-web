@@ -7,8 +7,10 @@
 <title><?= e($pageTitle ?? 'Connexion') ?> · Heaven of Web</title>
 <meta name="theme-color" content="#041C32">
 <link rel="manifest" href="/admin.webmanifest">
-<link rel="icon" href="/favicon.ico" sizes="32x32">
-<link rel="apple-touch-icon" href="/assets/img/icons/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="<?= asset('img/icons/favicon-32.png') ?>" type="image/png" sizes="32x32">
+<link rel="icon" href="<?= asset('img/icons/icon-192.png') ?>" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="<?= asset('img/icons/apple-touch-icon.png') ?>">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="<?= asset('css/admin.css') ?>">
 <script nonce="<?= csp_nonce() ?>">

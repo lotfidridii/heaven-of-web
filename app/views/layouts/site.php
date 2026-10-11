@@ -39,9 +39,10 @@ $socials = array_filter([
 <meta name="theme-color" content="#041C32">
 <meta name="color-scheme" content="light">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/assets/img/icons/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/img/icons/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="<?= asset('img/icons/favicon-32.png') ?>" type="image/png" sizes="32x32">
+<link rel="icon" href="<?= asset('img/icons/icon-192.png') ?>" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="<?= asset('img/icons/apple-touch-icon.png') ?>">
 
 <?php if ($lang === 'ar'): ?>
 <link rel="preload" href="/assets/fonts/cairo-arabic-700.woff2" as="font" type="font/woff2" crossorigin>
