@@ -214,7 +214,7 @@ final class AuthController
     {
         $user = Auth::require();
         View::$shared['adminUser'] = $user;
-        View::$shared['unreadCount'] = (int) DB::value("SELECT COUNT(*) FROM messages WHERE status = 'new'");
+        BaseController::shareLayout();
         $admins = DB::all('SELECT id, name, email, last_login_at, mfa_enabled_at FROM admins ORDER BY id');
         $me = DB::one('SELECT * FROM admins WHERE id = ?', [$user['id']]);
 

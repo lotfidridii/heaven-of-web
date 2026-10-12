@@ -22,7 +22,7 @@ final class Csrf
     public static function verify(): void
     {
         if (!self::check()) {
-            if (wants_json()) json_response(['ok' => false, 'error' => 'csrf'], 419);
+            if (wants_json()) json_response(['ok' => false, 'error' => 'csrf'], 403);
             throw new HttpException(419);
         }
     }

@@ -42,7 +42,8 @@ final class App
 
     private static function error(int $status, string $path): void
     {
-        http_response_code($status);
+        // 419 ("session expired") keeps its own message but is sent as 403: Apache turns unknown codes into 500.
+        http_response_code($status === 419 ? 403 : $status);
         if (wants_json()) {
             header('Content-Type: application/json');
             echo json_encode(['ok' => false, 'error' => $status]);

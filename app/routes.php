@@ -43,6 +43,7 @@ return static function (Router $r): void {
 
     $r->get('/admin/messages', [Admin\MessageController::class, 'index']);
     $r->get('/admin/messages/export', [Admin\MessageController::class, 'export']);
+    $r->post('/admin/messages/bulk', [Admin\MessageController::class, 'bulk']);
     $r->get('/admin/messages/{id:\d+}', [Admin\MessageController::class, 'show']);
     $r->post('/admin/messages/{id:\d+}/reply', [Admin\MessageController::class, 'reply']);
     $r->post('/admin/messages/{id:\d+}/status', [Admin\MessageController::class, 'status']);

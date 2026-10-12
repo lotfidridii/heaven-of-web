@@ -139,6 +139,43 @@ final class MessageController extends BaseController
         $this->back(in_array($status, ['archived', 'spam', 'new'], true) ? '/admin/messages' : '/admin/messages/' . (int) $id, $label);
     }
 
+    /** Apply one action to several messages (checkbox selection in the list). */
+    public function bulk(): void
+    {
+        $ids = array_values(array_unique(array_filter(array_map('intval', (array) ($_POST['ids'] ?? [])))));
+        $action = (string) input('action', '');
+        $back = (string) input('back', '/admin/messages');
+        if (!str_starts_with($back, '/admin/messages')) $back = '/admin/messages';
+        if (!$ids) $this->back($back, 'Aucun message sélectionné.', 'error');
+
+        $in = implode(',', array_fill(0, count($ids), '?'));
+        $n = count($ids);
+        $plural = $n > 1 ? 's' : '';
+        switch ($action) {
+            case 'read':
+                DB::run("UPDATE messages SET status = 'read', read_at = COALESCE(read_at, NOW()) WHERE id IN ($in) AND status <> 'replied'", $ids);
+                DB::run("UPDATE messages SET status = 'replied' WHERE id IN ($in) AND id IN (SELECT message_id FROM message_replies WHERE sent_ok = 1)", $ids);
+                $msg = "{$n} message{$plural} marqué{$plural} comme lu{$plural}.";
+                break;
+            case 'new':
+                DB::run("UPDATE messages SET status = 'new' WHERE id IN ($in)", $ids);
+                $msg = "{$n} message{$plural} marqué{$plural} comme non lu{$plural}.";
+                break;
+            case 'archived':
+            case 'spam':
+                DB::run("UPDATE messages SET status = ? WHERE id IN ($in)", [$action, ...$ids]);
+                $msg = $action === 'spam' ? "{$n} message{$plural} déplacé{$plural} dans les spams." : "{$n} message{$plural} archivé{$plural}.";
+                break;
+            case 'delete':
+                DB::run("DELETE FROM messages WHERE id IN ($in)", $ids);
+                $msg = "{$n} message{$plural} supprimé{$plural} définitivement.";
+                break;
+            default:
+                $this->back($back, 'Action inconnue.', 'error');
+        }
+        $this->back($back, $msg);
+    }
+
     public function delete(string $id): void
     {
         DB::run('DELETE FROM messages WHERE id = ?', [(int) $id]);
@@ -166,7 +203,13 @@ final class MessageController extends BaseController
     /** Unread counter for the admin badge (polled by admin.js). */
     public function unread(): void
     {
-        $latest = DB::one("SELECT id, name FROM messages WHERE status = 'new' ORDER BY created_at DESC LIMIT 1");
-        json_response(['count' => \App\Core\View::$shared['unreadCount'], 'latest' => $latest]);
+        $items = array_map(fn($m) => [
+            'id' => (int) $m['id'],
+            'name' => $m['name'],
+            'service' => $m['service'],
+            'excerpt' => str_excerpt($m['message'], 70),
+            'ago' => time_ago($m['created_at']),
+        ], \App\Core\View::$shared['latestUnread']);
+        json_response(['count' => \App\Core\View::$shared['unreadCount'], 'latest' => $items[0] ?? null, 'items' => $items]);
     }
 }

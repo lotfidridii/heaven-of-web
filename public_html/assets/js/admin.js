@@ -93,6 +93,75 @@
     });
   }
 
+  /* Header bell: dropdown with the latest new messages */
+  const notif = $('[data-notif]');
+  const notifPanel = $('[data-notif-panel]');
+  const notifToggle = $('[data-notif-toggle]');
+  const setNotif = (open) => {
+    if (!notifPanel) return;
+    notifPanel.hidden = !open;
+    notifToggle.setAttribute('aria-expanded', String(open));
+  };
+  notifToggle?.addEventListener('click', (e) => { e.stopPropagation(); setNotif(notifPanel.hidden); });
+  document.addEventListener('click', (e) => { if (notif && !notif.contains(e.target)) setNotif(false); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && notifPanel && !notifPanel.hidden) { setNotif(false); notifToggle.focus(); } });
+  const renderNotif = (items, count) => {
+    const list = $('[data-notif-list]');
+    if (!list) return;
+    list.replaceChildren(...items.map((m) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `/admin/messages/${m.id}`;
+      const av = document.createElement('span'); av.className = 'avatar avatar-sm'; av.textContent = (m.name || '?').charAt(0).toUpperCase();
+      const txt = document.createElement('span'); txt.className = 'notif-text';
+      const st = document.createElement('strong'); st.textContent = m.name;
+      const sm = document.createElement('small'); sm.textContent = m.excerpt;
+      txt.append(st, sm);
+      const t = document.createElement('time'); t.textContent = m.ago;
+      a.append(av, txt, t); li.append(a);
+      return li;
+    }));
+    $('[data-notif-empty]').hidden = items.length > 0;
+    $('[data-notif-count]').textContent = count ? `${count} non lu${count > 1 ? 's' : ''}` : 'Tout est lu';
+    notifToggle?.classList.toggle('has-new', count > 0);
+  };
+  notifToggle?.classList.toggle('has-new', Number($('[data-unread]')?.textContent || 0) > 0);
+
+  /* Messages: select several rows and apply one action (bar like a mail client) */
+  const bulk = $('[data-bulk]');
+  if (bulk) {
+    const items = $$('[data-bulk-item]', bulk);
+    const all = $('[data-bulk-all]', bulk);
+    const bar = $('[data-bulk-bar]', bulk);
+    const count = $('[data-bulk-count]', bulk);
+    const sync = () => {
+      const n = items.filter((i) => i.checked).length;
+      all.checked = n > 0 && n === items.length;
+      all.indeterminate = n > 0 && n < items.length;
+      bar.classList.toggle('is-active', n > 0);
+      count.textContent = n ? `${n} sélectionné${n > 1 ? 's' : ''} sur ${items.length}` : 'Tout sélectionner';
+      items.forEach((i) => i.closest('[data-bulk-row]')?.classList.toggle('is-selected', i.checked));
+    };
+    all.addEventListener('change', () => { items.forEach((i) => { i.checked = all.checked; }); sync(); });
+    items.forEach((i) => i.addEventListener('change', sync));
+    $('[data-bulk-clear]', bulk)?.addEventListener('click', () => { items.forEach((i) => { i.checked = false; }); sync(); });
+    // Shift+click selects a range
+    let last = null;
+    items.forEach((i, idx) => i.addEventListener('click', (e) => {
+      if (e.shiftKey && last !== null) {
+        const [a, b] = [Math.min(last, idx), Math.max(last, idx)];
+        for (let k = a; k <= b; k++) items[k].checked = i.checked;
+        sync();
+      }
+      last = idx;
+    }));
+    bulk.addEventListener('submit', (e) => {
+      const msg = e.submitter?.dataset.bulkConfirm;
+      if (msg && !confirm(msg)) e.preventDefault();
+    });
+    sync();
+  }
+
   /* Confirm destructive actions */
   document.addEventListener('submit', (e) => {
     const form = e.target.closest('form[data-confirm]') || (e.submitter?.form?.matches('[data-confirm]') ? e.submitter.form : null);
@@ -272,9 +341,15 @@
       const res = await fetch('/admin/api/unread', { headers: { Accept: 'application/json' }, credentials: 'same-origin' });
       if (!res.ok) return;
       const data = await res.json();
-      if (data.count > lastCount && data.latest) toast(`Nouveau message de ${data.latest.name}`);
+      if (data.count > lastCount && data.latest) {
+        toast(`Nouveau message de ${data.latest.name}`);
+        notifToggle?.classList.remove('ring');
+        void notifToggle?.offsetWidth; // restart the bell animation
+        notifToggle?.classList.add('ring');
+      }
       lastCount = data.count;
       setUnread(data.count);
+      renderNotif(data.items || [], data.count);
     } catch { /* offline */ }
   };
   if (badges.length) {

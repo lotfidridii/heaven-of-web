@@ -28,7 +28,14 @@ abstract class BaseController
         }
         if (is_post()) Csrf::verify();
         View::$shared['adminUser'] = $this->user;
+        self::shareLayout();
+    }
+
+    /** Data used by the admin layout on every page: unread counter and the latest new messages (header bell). */
+    public static function shareLayout(): void
+    {
         View::$shared['unreadCount'] = (int) DB::value("SELECT COUNT(*) FROM messages WHERE status = 'new'");
+        View::$shared['latestUnread'] = DB::all("SELECT id, name, service, message, created_at FROM messages WHERE status = 'new' ORDER BY created_at DESC LIMIT 5");
     }
 
     protected function render(string $template, array $data = []): void

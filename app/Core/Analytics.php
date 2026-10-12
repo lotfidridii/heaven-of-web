@@ -57,14 +57,17 @@ final class Analytics
         ]);
     }
 
-    /** Country from a CDN header when the host provides one (Cloudflare / Hostinger CDN). */
+    /**
+     * Visitor country: from a CDN header when the host provides one (Cloudflare…), otherwise from the
+     * local DB-IP database. Only the country code is stored; the IP address is never saved.
+     */
     private static function country(): ?string
     {
         foreach (['HTTP_CF_IPCOUNTRY', 'HTTP_X_COUNTRY_CODE', 'HTTP_X_GEO_COUNTRY'] as $h) {
             $c = strtoupper(substr((string) ($_SERVER[$h] ?? ''), 0, 2));
-            if (preg_match('/^[A-Z]{2}$/', $c) && $c !== 'XX') return $c;
+            if (preg_match('/^[A-Z]{2}$/', $c) && $c !== 'XX' && $c !== 'T1') return $c;
         }
-        return null;
+        return GeoIp::country(client_ip());
     }
 
     /** @return array{0:string,1:string,2:string} browser, os, device */
@@ -146,7 +149,8 @@ final class Analytics
             'browsers' => $top('browser'),
             'os' => $top('os'),
             'langs' => $top('lang'),
-            'countries' => $top('country', "AND {$pv} AND country IS NOT NULL", 8),
+            'countries' => $top('country', "AND {$pv} AND country IS NOT NULL", 15),
+            'countryKnown' => (int) DB::value("SELECT COUNT(DISTINCT day, visitor) FROM visits WHERE {$pv} AND day >= ? AND country IS NOT NULL", [$from]),
         ];
     }
 

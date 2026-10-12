@@ -17,10 +17,12 @@ if (is_file(BASE_PATH . '/vendor/autoload.php')) {
     });
 }
 
-$GLOBALS['__config'] = require (is_file(APP_PATH . '/config.php') ? APP_PATH . '/config.php' : APP_PATH . '/config.example.php');
+// Settings and secrets live in .env at the project root (next to public_html, never web-accessible).
+App\Core\Env::load(BASE_PATH . '/.env');
+$GLOBALS['__config'] = require APP_PATH . '/config.php';
 require APP_PATH . '/helpers.php';
 
-date_default_timezone_set(config('app.timezone', 'Europe/Paris'));
+date_default_timezone_set(config('app.timezone', 'Africa/Tunis'));
 mb_internal_encoding('UTF-8');
 
 $isLocal = config('app.env') === 'local';

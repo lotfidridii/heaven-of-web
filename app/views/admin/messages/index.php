@@ -32,27 +32,52 @@ $qs = static fn(array $p) => '/admin/messages?' . http_build_query(array_filter(
     <p class="empty empty-lg">
       <?= $q !== '' ? 'Aucun message ne correspond à « ' . e($q) . ' ».' : ($status === 'inbox' ? 'Aucun message pour l’instant. Les demandes du formulaire de contact arriveront ici, et une notification sera envoyée sur vos appareils abonnés.' : 'Ce dossier est vide.') ?>
     </p>
-  <?php else: ?>
-  <ul class="msg-list msg-list-full">
-    <?php foreach ($messages as $m): ?>
-    <li class="<?= $m['status'] === 'new' ? 'is-unread' : '' ?>">
-      <a href="/admin/messages/<?= $m['id'] ?>">
-        <span class="msg-from">
-          <?= e($m['name']) ?>
-          <small><?= e($m['company'] ?: $m['email']) ?></small>
-        </span>
-        <span class="msg-excerpt">
-          <?php if ($m['service']): ?><span class="tag"><?= e($m['service']) ?></span><?php endif; ?>
-          <?= e(str_excerpt($m['message'], 140)) ?>
-        </span>
-        <span class="msg-meta">
-          <?php if ($m['status'] !== 'new' && $m['status'] !== 'read'): ?><span class="status status-<?= e($m['status']) ?>"><?= e(MessageController::STATUSES[$m['status']]) ?></span><?php endif; ?>
-          <time datetime="<?= e($m['created_at']) ?>" title="<?= e(date('d/m/Y H:i', strtotime($m['created_at']))) ?>"><?= e(time_ago($m['created_at'])) ?></time>
-        </span>
-      </a>
-    </li>
-    <?php endforeach; ?>
-  </ul>
+  <?php else:
+    $inTrash = in_array($status, ['archived', 'spam'], true); ?>
+  <form method="post" action="/admin/messages/bulk" data-bulk>
+    <?= csrf_field() ?>
+    <input type="hidden" name="back" value="<?= e($_SERVER['REQUEST_URI'] ?? '/admin/messages') ?>">
+    <div class="bulk-bar" data-bulk-bar>
+      <label class="bulk-check" title="Tout sélectionner">
+        <input type="checkbox" data-bulk-all aria-label="Tout sélectionner">
+      </label>
+      <span class="bulk-count" data-bulk-count aria-live="polite">Tout sélectionner</span>
+      <div class="bulk-actions" data-bulk-actions>
+        <button class="bulk-btn" type="submit" name="action" value="read"><?= icon('eye') ?><span>Lu</span></button>
+        <button class="bulk-btn" type="submit" name="action" value="new"><?= icon('mail') ?><span>Non lu</span></button>
+        <?php if ($inTrash): ?>
+        <button class="bulk-btn" type="submit" name="action" value="read"><?= icon('inbox') ?><span>Restaurer</span></button>
+        <?php else: ?>
+        <button class="bulk-btn" type="submit" name="action" value="archived"><?= icon('archive') ?><span>Archiver</span></button>
+        <button class="bulk-btn" type="submit" name="action" value="spam"><?= icon('spam') ?><span>Spam</span></button>
+        <?php endif; ?>
+        <span class="bulk-sep" aria-hidden="true"></span>
+        <button class="bulk-btn bulk-danger" type="submit" name="action" value="delete" data-bulk-confirm="Supprimer définitivement les messages sélectionnés ? Cette action est irréversible."><?= icon('trash') ?><span>Supprimer</span></button>
+        <button class="bulk-close" type="button" data-bulk-clear aria-label="Annuler la sélection"><?= icon('close') ?></button>
+      </div>
+    </div>
+    <ul class="msg-list msg-list-full msg-list-select">
+      <?php foreach ($messages as $m): ?>
+      <li class="<?= $m['status'] === 'new' ? 'is-unread' : '' ?>" data-bulk-row>
+        <label class="row-check"><input type="checkbox" name="ids[]" value="<?= (int) $m['id'] ?>" data-bulk-item aria-label="Sélectionner le message de <?= e($m['name']) ?>"></label>
+        <a href="/admin/messages/<?= $m['id'] ?>">
+          <span class="msg-from">
+            <?= e($m['name']) ?>
+            <small><?= e($m['company'] ?: $m['email']) ?></small>
+          </span>
+          <span class="msg-excerpt">
+            <?php if ($m['service']): ?><span class="tag"><?= e($m['service']) ?></span><?php endif; ?>
+            <?= e(str_excerpt($m['message'], 140)) ?>
+          </span>
+          <span class="msg-meta">
+            <?php if ($m['status'] !== 'new' && $m['status'] !== 'read'): ?><span class="status status-<?= e($m['status']) ?>"><?= e(MessageController::STATUSES[$m['status']]) ?></span><?php endif; ?>
+            <time datetime="<?= e($m['created_at']) ?>" title="<?= e(date('d/m/Y H:i', strtotime($m['created_at']))) ?>"><?= e(time_ago($m['created_at'])) ?></time>
+          </span>
+        </a>
+      </li>
+      <?php endforeach; ?>
+    </ul>
+  </form>
   <?php endif; ?>
 </section>
 

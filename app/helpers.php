@@ -228,7 +228,8 @@ function md(string $text): string
         $inline = static function (string $s): string {
             $s = preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $s);
             $s = preg_replace('/(?<!\*)\*(?!\s)(.+?)\*(?!\*)/s', '<em>$1</em>', $s);
-            $s = preg_replace('/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+|\/[^\s)]*)\)/', '<a href="$2">$1</a>', $s);
+            $s = preg_replace('/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+|tel:\+?[0-9]+|\/[^\s)]*)\)/', '<a href="$2">$1</a>', $s);
+            $s = str_replace('<a href="tel:', '<a dir="ltr" href="tel:', $s); // keep "+216 …" readable in Arabic
             return nl2br($s, false);
         };
         if (preg_match('/^(#{2,4})\s+(.+)$/', $block, $m)) {

@@ -95,13 +95,42 @@ $langNames = ['fr' => 'Français', 'en' => 'Anglais', 'ar' => 'Arabe', '—' => 
     <h2>Navigateurs</h2>
     <?= $bars($stats['browsers'], 'Pas encore de données.') ?>
   </section>
-  <?php if ($stats['countries']): ?>
-  <section class="card">
-    <h2>Pays</h2>
-    <?= $bars($stats['countries'], '') ?>
-  </section>
-  <?php endif; ?>
 </div>
+
+<?php
+$countryName = static function (string $code): string {
+    if (class_exists(Locale::class)) {
+        $n = Locale::getDisplayRegion('-' . $code, 'fr');
+        if ($n !== '' && $n !== $code) return $n;
+    }
+    return $code;
+};
+$known = max(1, (int) $stats['countryKnown']);
+?>
+<section class="card countries-card">
+  <header class="card-head">
+    <h2>Pays des visiteurs</h2>
+    <span class="muted small-note"><?= (int) $stats['countryKnown'] ?> visiteur<?= $stats['countryKnown'] > 1 ? 's' : '' ?> localisé<?= $stats['countryKnown'] > 1 ? 's' : '' ?> sur <?= (int) $stats['visitors'] ?></span>
+  </header>
+  <?php if ($stats['countries']): ?>
+  <ol class="country-list">
+    <?php foreach ($stats['countries'] as $i => $c): $pct = round($c['n'] / $known * 100); ?>
+    <li>
+      <span class="country-rank"><?= $i + 1 ?></span>
+      <span class="country-code"><?= e($c['label']) ?></span>
+      <span class="country-name"><?= e($countryName($c['label'])) ?></span>
+      <span class="country-bar" aria-hidden="true"><span style="--w: <?= $pct ?>%"></span></span>
+      <span class="country-num"><strong><?= (int) $c['n'] ?></strong><small><?= $pct ?> %</small></span>
+    </li>
+    <?php endforeach; ?>
+  </ol>
+  <?php elseif (!App\Core\GeoIp::available()): ?>
+  <p class="empty">La base de géolocalisation n’est pas installée. Lancez <code>php app/cli/update-geoip.php</code> sur le serveur (une fois, puis chaque mois).</p>
+  <?php else: ?>
+  <p class="empty">Pas encore de visite localisée sur la période. Les pays apparaissent dès les prochaines visites.</p>
+  <?php endif; ?>
+  <p class="geo-credit">Pays déduit de l’adresse IP au moment de la visite (l’adresse n’est pas conservée) · <a href="https://db-ip.com" target="_blank" rel="noopener">IP Geolocation by DB-IP</a></p>
+</section>
 
 <div class="grid-2 grid-wide-left">
   <section class="card">

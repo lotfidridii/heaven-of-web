@@ -28,6 +28,7 @@ Front-end libraries (three.js, GSAP, Lenis, Chart.js, fonts) are committed in `p
 ## Layout
 
 ```
+.env.example            configuration template → copy to .env (never committed)
 app/                    PHP application (kept outside the web root)
   Core/                 router, DB, i18n, auth, mailer, push, uploads, analytics
   Controllers/          SiteController (public), Admin/* (back office)
@@ -35,7 +36,7 @@ app/                    PHP application (kept outside the web root)
   lang/                 interface strings: fr.php, en.php, ar.php
   migrations/           001_init.sql (schema), 002_seed.sql (content)
   cli/                  migrate, create-admin, make-icons, optimize-seed
-  config.example.php    copy to config.php in production
+  config.php            reads settings from .env (no secrets here)
 public_html/            web root: index.php, assets/, uploads/, sw.js, manifests
 vendor/                 Composer packages (PHPMailer, web-push) — upload it
 storage/                error log

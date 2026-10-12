@@ -39,6 +39,7 @@ $nonce = csp_nonce();
     try { t = localStorage.getItem('how-theme'); } catch (e) {}
     if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     document.documentElement.dataset.theme = t;
+    document.documentElement.classList.add('js');
   })();
 </script>
 </head>
@@ -74,6 +75,30 @@ $nonce = csp_nonce();
       <button class="icon-btn menu-btn" type="button" data-sidebar-open aria-controls="sidebar" aria-expanded="false"><?= icon('menu') ?><span class="sr-only">Menu</span></button>
       <h1 class="topbar-title"><?= e($pageTitle ?? '') ?></h1>
       <div class="topbar-tools">
+        <div class="notif" data-notif>
+          <button class="icon-btn notif-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="notif-panel" data-notif-toggle>
+            <?= icon('bell') ?>
+            <span class="sr-only">Nouveaux messages</span>
+            <span class="badge notif-badge" data-unread <?= $unreadCount ? '' : 'hidden' ?>><?= (int) $unreadCount ?></span>
+          </button>
+          <div class="notif-panel" id="notif-panel" hidden data-notif-panel>
+            <div class="notif-head">
+              <strong>Nouveaux messages</strong>
+              <span class="muted" data-notif-count><?= $unreadCount ? (int) $unreadCount . ' non lu' . ($unreadCount > 1 ? 's' : '') : 'Tout est lu' ?></span>
+            </div>
+            <ul class="notif-list" data-notif-list>
+              <?php foreach ($latestUnread ?? [] as $n): ?>
+              <li><a href="/admin/messages/<?= (int) $n['id'] ?>">
+                <span class="avatar avatar-sm" aria-hidden="true"><?= e(mb_strtoupper(mb_substr($n['name'], 0, 1))) ?></span>
+                <span class="notif-text"><strong><?= e($n['name']) ?></strong><small><?= e(str_excerpt($n['message'], 70)) ?></small></span>
+                <time><?= e(time_ago($n['created_at'])) ?></time>
+              </a></li>
+              <?php endforeach; ?>
+            </ul>
+            <p class="notif-empty" data-notif-empty <?= !empty($latestUnread) ? 'hidden' : '' ?>>Aucun nouveau message. Vous serez prévenu ici dès qu’une demande arrive.</p>
+            <a class="notif-all" href="/admin/messages">Voir tous les messages</a>
+          </div>
+        </div>
         <button class="icon-btn" type="button" data-theme-toggle aria-label="Basculer le thème clair ou sombre">
           <span class="theme-icon theme-icon-dark"><?= icon('moon') ?></span><span class="theme-icon theme-icon-light"><?= icon('sun') ?></span>
         </button>

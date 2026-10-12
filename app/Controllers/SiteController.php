@@ -266,7 +266,7 @@ final class SiteController
         $back = lurl() . '#contact';
 
         if (!Csrf::check()) {
-            $json ? json_response(['ok' => false, 'message' => t('contact.error.expired')], 419) : null;
+            $json ? json_response(['ok' => false, 'message' => t('contact.error.expired')], 403) : null;
             flash('contact_error', t('contact.error.expired'));
             redirect($back);
         }

@@ -21,6 +21,7 @@ The domain folder looks like `domains/heavenofweb.fr/`. Upload:
 
 ```
 domains/heavenofweb.fr/
+  .env            ← your configuration (step 5), never inside public_html when avoidable
   app/            ← from the project
   vendor/         ← from the project (run `composer install --no-dev` first, or copy it from Docker)
   storage/        ← empty folder, must be writable
@@ -33,17 +34,19 @@ Do not upload `node_modules/`, `docker/`, `tools/`, `.git/`.
 
 ## 5. Configuration
 
-Copy `app/config.example.php` to `app/config.php` and fill in:
+All settings and secrets live in a `.env` file at the root of the domain folder, next to `public_html/` (`app/config.php` only reads it and contains no secrets). Copy `.env.example` to `.env` and fill in:
 
-- `app.url` → `https://heavenofweb.fr`
-- `app.secret` → a long random string (`php -r "echo bin2hex(random_bytes(32));"`)
-- `app.setup_key` → a one-time password used to create the first admin
-- `db.*` → the database from step 2
-- `mail.*` → the mailbox from step 3 (`pass` = the mailbox password)
+- `APP_ENV=production`, `APP_URL=https://heavenofweb.fr`
+- `APP_SECRET` → a long random string (`php -r "echo bin2hex(random_bytes(32));"`)
+- `SETUP_KEY` → a one-time password used to create the first admin
+- `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS` → the database from step 2
+- `MAIL_USER`, `MAIL_PASS` → the mailbox from step 3
+
+Variables already defined in the server environment override `.env`. If `app/` had to go inside `public_html/`, `.env` goes there too: `.htaccess` blocks access to dot-files, but keeping it outside the web root is safer.
 
 ## 6. First admin
 
-Open `https://heavenofweb.fr/admin`: with no admin yet you are sent to the setup page. Enter the `setup_key`, your name, email and a password (10+ characters). The page locks itself once an admin exists. (Over SSH you can use `php app/cli/create-admin.php` instead.)
+Open `https://heavenofweb.fr/admin`: with no admin yet you are sent to the setup page. Enter the `SETUP_KEY`, your name, email and a password (10+ characters). The page locks itself once an admin exists. (Over SSH you can use `php app/cli/create-admin.php` instead.)
 
 ## 7. After going live
 
@@ -61,5 +64,5 @@ Upload the changed files. If a new `app/migrations/00X_*.sql` file appears, impo
 
 - Each admin turns it on in **Admin → Compte → Double authentification**: scan the QR code with an authenticator app (Google Authenticator, Microsoft Authenticator, 1Password…), enter a code, then keep the 10 recovery codes somewhere safe.
 - **Obligatoire pour tous les administrateurs** on the same page forces every admin to set it up before using the admin panel.
-- Authenticator secrets are encrypted with `app.secret`. **Do not change `app.secret` once MFA is in use**; otherwise run the reset below for each admin.
+- Authenticator secrets are encrypted with `APP_SECRET`. **Do not change `APP_SECRET` once MFA is in use**; otherwise run the reset below for each admin.
 - Lost phone and recovery codes: `php app/cli/reset-mfa.php email@example.com` (over SSH), then the admin signs in with the password and sets MFA up again.
